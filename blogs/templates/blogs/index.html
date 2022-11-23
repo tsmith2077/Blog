@@ -1,0 +1,41 @@
+{% extends "blogs/base.html" %}
+
+{% block page_header %}
+    <h1>Blog Posts</h1>
+{% endblock page_header %}
+
+{% block content %}
+
+<h5>Interesting blogs about absolutely nothing.</h5>
+{% if not user.is_authenticated %}
+    <div class="mb-5 mt-5 text-center container">
+        <h6>New to Blog Spot?</h6>
+        <p>Register or log in below to make new blog posts, or edit old ones!</p>
+        <a class="btn btn-primary btn-md" href="{% url 'users:register' %}">Register</a>
+        <a class="btn btn-primary btn-md" href="{% url 'users:login' %}">Log in</a>
+    </div>
+{% endif %}
+
+<div class="text-center">
+    <h5><a href="{% url 'blogs:new_post' %}">Add a new blog post</a></h5>
+</div>
+
+
+<ul>
+    {% for blog in blog_posts %}
+        <div class="mb-3 ">
+            <h4 class="card-header">
+                {{ blog.title }}
+                <small>{{ blog.date_added|date:'M d, Y H:i' }}
+                <a href="{% url 'blogs:edit_post' blog.id %}">edit post</a></small>
+            </h4>
+            <div class="card-body">
+                {{ blog.text }}
+            </div>
+        </div>
+    {% empty %}
+        <li>No blogs have been posted yet. Stay tuned!</li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}
